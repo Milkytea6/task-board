@@ -20,11 +20,11 @@ function generateTaskId() {
 function createTaskCard(task) {
     console.log('hello');
     const taskId = generateTaskId();
-    let taskCard = $("<div>").addClass("task-card draggable ui-widget-content").attr('id', 'task_'+ taskId );
+    let taskCard = $("<div>").addClass("task-card draggable ui-widget-content").attr('task-id', task.id);
     let taskTitle = $("<h3>").text(task.title);
     let taskDescription = $("<p>").text(task.description);
     let taskDueDate = $("<p>").text("DueDate: " + task.dueDate);
-    let deleteBtn = $('<button>').text('Delete').addClass('delete-task');
+    let deleteBtn = $('<button>').text('Delete').addClass('delete-task').attr('task-id', task.id);
     taskCard.append(taskTitle, taskDescription, taskDueDate, deleteBtn);
     // Checks if the task is due today or overdue and changes the color accordingly
     if (task.status !== "done") {
@@ -93,7 +93,8 @@ function handleAddTask(event) {
         title: $('#task-title').val(),
         dueDate: $('#datepicker').val(),
         description: $('#task-description').val(),
-        status: "todo"
+        status: "todo",
+        id: crypto.randomUUID(),
     };
     // Logs to console for debugging
     console.log(task);
@@ -107,31 +108,35 @@ function handleAddTask(event) {
 // Todo: create a function to handle deleting a task
 function handleDeleteTask(event) {
     console.log("handleDeleteTask");
-    $('#task_' + taskId).remove();
+    const taskId = $(this).attr('task-id');
+    const tasks = createTaskCard();
+    
 }
-$('.delete-task').on('click', function(){
-    console.log('on Click')
-    handleDeleteTask(taskId);
-})
+
+
 
 
 // Todo: create a function to handle dropping a task into a new status lane
 function handleDrop(event, ui) {
-    $('.droppable-column').droppable({
-        accept: '.draggable', // Specify which elements can be dropped
-        drop: function (event, ui) {
-            // Handle the drop event, move the dragged element to the droppable column
-            $droppableColumn.append(ui.draggable);
-        }
-    });
+    
 }
 
 // Todo: when the page loads, render the task list, add event listeners, make lanes droppable, and make the due date field a date picker
 $(document).ready(function () {
     renderTaskList();
 
-});
+    $('.lane').droppable({
+        accept: '.draggable',
+        drop: handleDrop,
+      });
+    });
+
 
 $(function () {
     $("#datepicker").datepicker();
+});
+
+$('.delete-task').on('click', function(){
+    console.log('on Click')
+    handleDeleteTask();
 });
