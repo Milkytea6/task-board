@@ -12,19 +12,17 @@ console.log(typeof taskList);
 
 // Todo: create a function to generate a unique task id
 function generateTaskId() {
-    const uniqueId = Math.floor(Math.random() * 1000);
-    return uniqueId;
+   return crypto.randomUUID()
 }
 
 // Todo: create a function to create a task card
 function createTaskCard(task) {
     console.log('hello');
-    const taskId = generateTaskId();
     let taskCard = $("<div>").addClass("task-card draggable ui-widget-content").attr('task-id', task.id);
     let taskTitle = $("<h3>").text(task.title);
     let taskDescription = $("<p>").text(task.description);
     let taskDueDate = $("<p>").text("DueDate: " + task.dueDate);
-    let deleteBtn = $('<button>').text('Delete').addClass('delete-task').attr('task-id', task.id);
+    let deleteBtn = $('<button>').text('Delete').addClass('delete-task').attr('task-id', task.id).on('click', handleDeleteTask);
     taskCard.append(taskTitle, taskDescription, taskDueDate, deleteBtn);
     // Checks if the task is due today or overdue and changes the color accordingly
     if (task.status !== "done") {
@@ -74,11 +72,7 @@ function renderTaskList() {
         revert: 'invalid', // If not dropped on a droppable target, it will revert back
         cursor: 'move' // Change cursor to indicate draggable element
     });
-
-    
 }
-
-
 
 const saveChanges = $('#save-changes');
 saveChanges.on('click', function () {
@@ -94,7 +88,7 @@ function handleAddTask(event) {
         dueDate: $('#datepicker').val(),
         description: $('#task-description').val(),
         status: "todo",
-        id: crypto.randomUUID(),
+        id: generateTaskId(),
     };
     // Logs to console for debugging
     console.log(task);
@@ -110,11 +104,13 @@ function handleDeleteTask(event) {
     console.log("handleDeleteTask");
     const taskId = $(this).attr('task-id');
     const tasks = createTaskCard();
-    
+    // Loop through the tasks and remove the task with  the matching ID
+    tasks = tasks.filter(task => task.id === taskId);
+    // Saves new array to local storage
+    localStorage.setItem('tasks', JSON.stringify(taskArray));
+    // Renders the tasks back on the page
+    renderTaskList()
 }
-
-
-
 
 // Todo: create a function to handle dropping a task into a new status lane
 function handleDrop(event, ui) {
@@ -135,8 +131,4 @@ $(document).ready(function () {
 $(function () {
     $("#datepicker").datepicker();
 });
-
-$('.delete-task').on('click', function(){
-    console.log('on Click')
-    handleDeleteTask();
-});
+    
