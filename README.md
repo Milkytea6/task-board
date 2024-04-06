@@ -1,5 +1,7 @@
 # Task Board
 
+## Functionality
+The user can view a task board of different tasks organized by due date and progress of each task. The user will select "Add Task" then input a title, due date, and description. Then the task will render into the Not Yet Started column. When the user starts the task, they can move it to the In Progress column. Then when the user finished the task, they can move it to the completed column. The tasks will change color accoring to the deadline. The task will also save in local storage if the user closes the page and returns or refreshes the page. 
 ## User Story
 ```
 AS A project team member with multiple tasks to organize

@@ -14,3 +14,10 @@ body {
 .task-card:hover {
   cursor: grab;
 }
+/* Style for alert box of colors */
+.alert{
+  display: flex;
+}
+.alert p{
+  width: 500px;
+}

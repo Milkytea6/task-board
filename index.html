@@ -18,6 +18,13 @@
   <header class="p-4 mb-4 text-center border-bottom border-5">
     <h1 class="display-3">Task Board</h1>
     <p class="lead">A simple Kanban board for task management</p>
+    <!-- Added an alert box for the colors of the tasks and what they mean -->
+    <div class="alert">
+      <p class="bg-primary">Not Due Today</p>
+      <p class="bg-warning">Due Today</p>
+      <p class="bg-danger">Overdue</p>
+      <p class="bg-light">Completed</p>
+    </div> 
   </header>
   <div class="container">
     <div class="text-center mb-5">
@@ -61,7 +68,8 @@
       <div class="col-12 col-lg-4 d-flex">
         <div id="to-do" class="card border-light mb-3 lane flex-grow-1">
           <div class="card-header bg-white">
-            <h2 class="card-title mb-1">To Do</h2>
+            <!-- Changed the titles of the columns, but kept the id's and classes as "to-do" to avoid conflicts -->
+            <h2 class="card-title mb-1">Not Yet Started</h2>
           </div>
           <div class="card-body bg-light">
             <div id="todo-cards" class="droppable-column"></div>
@@ -81,7 +89,7 @@
       <div class="col-12 col-lg-4 d-flex">
         <div id="done" class="card border-light mb-3 lane flex-grow-1">
           <div class="card-header bg-white">
-            <h2 class="card-title mb-1">Done</h2>
+            <h2 class="card-title mb-1">Completed</h2>
           </div>
           <div class="card-body bg-light">
             <div id="done-cards" class="droppable-column"></div>

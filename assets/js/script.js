@@ -42,7 +42,7 @@ function createTaskCard(task) {
 
 // Todo: create a function to render the task list and make cards draggable
 function renderTaskList() {
-    let taskArray = JSON.parse(localStorage.getItem('tasks'));
+    let taskArray = JSON.parse(localStorage.getItem('tasks')) || [];
     // Selects each progress column to referance
     const todoColumn = $('#todo-cards');
     todoColumn.empty();//Clears the column before the new array renders with the deleted task
@@ -55,7 +55,8 @@ function renderTaskList() {
 
     // Loops though each task and puts in in a column
     for (let i = 0; i < taskArray.length; i++) {
-        if (taskArray[i].status === "todo") {
+        // check for "to-do" status and appends to to-do column if it matches.
+        if (taskArray[i].status === "to-do") {
             todoColumn.append(createTaskCard(taskArray[i]));
         }
         else if (taskArray[i].status === 'in-progress') {
@@ -82,7 +83,7 @@ function handleAddTask(event) {
         title: $('#task-title').val(),
         dueDate: $('#datepicker').val(),
         description: $('#task-description').val(),
-        status: "todo",
+        status: "to-do",// fixed a typo bug from "todo" to "to-do"
         id: generateTaskId(),
     };
     // Logs to console for debugging
@@ -113,7 +114,22 @@ function handleDeleteTask(event) {
 
 // Todo: create a function to handle dropping a task into a new status lane
 function handleDrop(event, ui) {
-
+    // get array from local storage
+    let taskArray = JSON.parse(localStorage.getItem('tasks'));
+    // get the id of the task we are dragging
+    let taskId = ui.draggable.attr('task-id');
+    // sets the lanes id status to a varibale
+    const newStatus = event.target.id;
+    for (let task of taskArray) {
+        // find the id of the task and set a new status matching the lane it is dropped into.
+        if (task.id === taskId) {
+          task.status = newStatus;
+        }
+      }
+     // Saves new array to local storage
+    localStorage.setItem('tasks', JSON.stringify(taskArray));
+    // Renders the tasks back on the page
+    renderTaskList();
 }
 
 // Todo: when the page loads, render the task list, add event listeners, make lanes droppable, and make the due date field a date picker
