@@ -26,3 +26,7 @@ THEN the task is removed from the task board and will not be added back after re
 WHEN I refresh the page
 THEN the saved tasks persist
 ```
+## Link to deployed webpage
+https://milkytea6.github.io/task-board/
+## Screenshot of webpage
+![Screenshot of Chris' Task board website.](./assets/images/task-board-screenshot.png)
